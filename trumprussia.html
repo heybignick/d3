@@ -12,31 +12,345 @@
 
 	#content {
 		border: 1px solid #CCC;
+		margin-bottom: 0;
+		padding: 0;
 	}
 
 </style>
 
 
-<div id="bounding" class="col-md-12">
+<div id='bounding' class='col-md-12'>
 	<h1>Red, White, and Bolshevik</h1>
 	<h3>A new take on the Trump/Russia connection</h3>
 	<p>
-		This is a new take on a fantastic visualization already put together by the Washington Post team.  I'll try to keep it updated, but chances are I won't be able to. 
+		This is a new take on a <a href='https://www.washingtonpost.com/graphics/national/trump-russia'>fantastic visualization</a> already put together by the Washington Post team.  It depicts the quite messy web of connections between current and former members of the Trump administration/campaign and the Kremlin.
 	</p>
-	<div id="content"></div>
+	<div id='content'>
+	</div>
 	<h3>How I made this</h3>
 	<p>
-		The animation was created using the super-cool <a href="http://www.d3js.org">D3.js</a> visualization package.
+		The animation was created using the super-cool <a href='http://www.d3js.org'>D3.js</a> visualization package.  It's a fairly heavily customized version of a force-directed graphs, the beginnings of which were derived from <a href='https://bl.ocks.org/mbostock/4062045'>this example</a>.
 	</p>
 	<h3>The code</h3>
+
+			<h5>CSS</h5>
+<pre><code class="language-css">.links line {
+  stroke: #AAA;
+  stroke-opacity: 0.6;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+#content {
+	border: 1px solid #CCC;
+	margin-bottom: 0;
+	padding: 0;
+}
+</code></pre>
+
+			<h5>HTML</h5>
+<pre><code class="language-markup">&lt;div id='bounding' class='col-md-12'>
+	&lt;div id='content'>
+	&lt;/div>
+&lt;/div>
+</code></pre>
+
+			<h5>JS</h5>
+<pre><code class="language-javascript">var svg = d3.select('#content').append('svg').attr('id', 'svg'),
+    width = Math.max(document.getElementById('bounding').clientWidth, 0) - 32,
+    height = 500;
+
+svg.attr('height', height).attr('width', width);
+
+var color = ['#779ecb', '#FF6961'];
+
+var simulation = d3.forceSimulation()
+    .force('link', d3.forceLink().id(function(d) { return d.id; }))
+    .force('charge', d3.forceManyBody().strength(-300))
+    .force('center', d3.forceCenter(width / 2, height / 2));
+
+d3.json('trumprussia/russia.json', function(error, graph) {
+  if (error) throw error;
+
+  // Add connections for own people
+  graph.nodes.forEach(node =>{
+  	if(node.id !== 'dtrump' && node.id !== 'vputin') {
+  		if(node.group == 0) {
+  			// Add Trump link
+  			graph.links.push({'source': 'dtrump', 'target': node.id, 'same': true});
+  		}else {
+  			// Add Putin link
+  			graph.links.push({'source': 'vputin', 'target': node.id, 'same': true});
+  		}
+  	}
+  });
+
+  var link = svg.append('g')
+      .attr('class', 'links')
+    .selectAll('line')
+    .data(graph.links)
+    .enter().append('line')
+      .attr('stroke-width', function(d) {
+      	if(d.same) return 0;
+      	return 2;
+      });
+
+  var node = svg.append('g')
+      .attr('class', 'nodes')
+    .selectAll('g')
+    .data(graph.nodes)
+    .enter().append('g');
+
+  var circle = node.append('circle')
+      .attr('r', function(d) {
+  			if(d.main == 1) return 34;
+  			return 23;
+  		})
+      .attr('fill', function(d) { return color[d.group]; });
+      
+
+  var picture = node.append('image')
+  		.attr('xlink:href', function(d) { return 'trumprussia/pics/' + d.id + '.png' })
+  		.attr('height', function(d) {
+  			if(d.main == 1) return 60;
+  			return 40;
+  		})
+  		.attr('width', function(d) {
+  			if(d.main == 1) return 60;
+  			return 40;
+  		})
+  		.attr('x', function(d) {
+  			if(d.main == 1) return -30;
+  			return -20;
+  		})
+  		.attr('y', function(d) {
+  			if(d.main == 1) return -30;
+  			return -20;
+  		})
+  		.attr('stroke', '#FFF')
+  		.call(d3.drag()
+          .on('start', dragstarted)
+          .on('drag', dragged)
+          .on('end', dragended));
+
+  node.append('title')
+      .text(function(d) { return d.id; });
+
+  simulation
+      .nodes(graph.nodes)
+      .on('tick', ticked);
+
+  simulation.force('link')
+      .links(graph.links);
+
+  function ticked() {
+    link
+        .attr('x1', function(d) { 
+        	if(d.source.main == 1 && d.source.group == 0) {
+        		return 50;
+        	} else if(d.source.main == 1 && d.source.group == 1) {
+        		return width - 50; 
+        	}
+        	return d.source.x; 
+        })
+        .attr('y1', function(d) { return d.source.y; })
+        .attr('x2', function(d) {
+        	if(d.target.main == 1 && d.target.group == 0) {
+        		return 50;
+        	} else if(d.target.main == 1 && d.target.group == 1) {
+        		return width - 50; 
+        	}
+        	return d.target.x; 		        	
+        })
+        .attr('y2', function(d) { return d.target.y; });
+
+    node
+        .attr('transform', function(d) {
+        	// X
+        	var x = 0;
+        	if(d.main == 1 && d.group == 0) {
+        		x = 50;
+        	} else if(d.main == 1 && d.group == 1) {
+        		x = width - 50; 
+        	} else {
+	        	x = d.x;
+        	}
+        	return 'translate(' + x + ',' + d.y + ')';   	
+        });
+  }
+});
+
+function dragstarted(d) {
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(d) {
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+}
+
+function dragended(d) {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+}
+
+</code></pre>
+
+			<h5>russia.json</h5>
+<pre><code class="language-markup">{
+  "nodes": [
+    {"id": "dtrump", "group": 0, "main": 1},
+    {"id": "pmanafort", "group": 0},
+    {"id": "mflynn", "group": 0},
+    {"id": "cpage", "group": 0},
+    {"id": "jsessions", "group": 0},
+    {"id": "jkushner", "group": 0},
+    {"id": "dtrumpjr", "group": 0},
+    {"id": "rtillerson", "group": 0},
+    {"id": "wross", "group": 0},
+    {"id": "rstone", "group": 0},
+    {"id": "jgordon", "group": 0},
+    {"id": "mcaputo", "group": 0},
+    {"id": "rgates", "group": 0},
+    {"id": "mkasowitz", "group": 0},
+    {"id": "mcohen", "group": 0},
+    {"id": "itrump", "group": 0},
+    {"id": "fsater", "group": 0},
+    {"id": "gpapadopoulos", "group": 0},
+    {"id": "eprince", "group": 0},
+    {"id": "bbenczkowski", "group": 0},
+
+    {"id": "vputin", "group": 1, "main": 1},
+    {"id": "rbusiness", "group": 1},
+    {"id": "skislyak", "group": 1},
+    {"id": "isechin", "group": 1},
+    {"id": "rhackers", "group": 1},
+    {"id": "sgorkov", "group": 1},
+    {"id": "smillian", "group": 1},
+    {"id": "aartemenko", "group": 1},
+    {"id": "prep", "group": 1},
+    {"id": "dfirtash", "group": 1},
+    {"id": "oderipaska", "group": 1},
+    {"id": "vpodobnyy", "group": 1},
+    {"id": "aagalarov", "group": 1},
+    {"id": "eagalarov", "group": 1},
+    {"id": "vvekselberg", "group": 1},
+    {"id": "ymilner", "group": 1},
+    {"id": "atorshin", "group": 1},
+    {"id": "kkilimnik", "group": 1},
+    {"id": "nveselnitskaya", "group": 1},
+    {"id": "rgoldstone", "group": 1},
+    {"id": "rakhmetshin", "group": 1},
+    {"id": "asamochornov", "group": 1},
+    {"id": "ikaveladze", "group": 1},
+    {"id": "dpeskov", "group": 1}
+  ],
+  "links": [
+    {"source": "dtrump", "target": "vputin"},
+    {"source": "dtrump", "target": "rbusiness"},
+    {"source": "dtrump", "target": "skislyak"},
+    {"source": "dtrump", "target": "smillian"},
+    {"source": "dtrump", "target": "aartemenko"},
+    {"source": "dtrump", "target": "aagalarov"},
+    {"source": "dtrump", "target": "eagalarov"},
+    {"source": "dtrump", "target": "atorshin"},
+    {"source": "dtrump", "target": "rgoldstone"},
+
+    {"source": "pmanafort", "target": "rbusiness"},
+    {"source": "pmanafort", "target": "dfirtash"},
+    {"source": "pmanafort", "target": "oderipaska"},
+    {"source": "pmanafort", "target": "eagalarov"},
+    {"source": "pmanafort", "target": "kkilimnik"},
+    {"source": "pmanafort", "target": "nveselnitskaya"},
+    {"source": "pmanafort", "target": "rgoldstone"},
+    {"source": "pmanafort", "target": "rakhmetshin"},
+    {"source": "pmanafort", "target": "asamochornov"},
+    {"source": "pmanafort", "target": "ikaveladze"},
+
+    {"source": "mflynn", "target": "vputin"},
+    {"source": "mflynn", "target": "rbusiness"},
+    {"source": "mflynn", "target": "skislyak"},
+
+    {"source": "cpage", "target": "rbusiness"},
+    {"source": "cpage", "target": "skislyak"},
+    {"source": "cpage", "target": "isechin"},
+    {"source": "cpage", "target": "vpodobnyy"},
+
+    {"source": "jsessions", "target": "skislyak"},
+
+    {"source": "jkushner", "target": "rbusiness"},
+    {"source": "jkushner", "target": "skislyak"},
+    {"source": "jkushner", "target": "sgorkov"},
+    {"source": "jkushner", "target": "eagalarov"},
+    {"source": "jkushner", "target": "ymilner"},
+    {"source": "jkushner", "target": "nveselnitskaya"},
+    {"source": "jkushner", "target": "rgoldstone"},
+    {"source": "jkushner", "target": "rakhmetshin"},
+    {"source": "jkushner", "target": "asamochornov"},
+    {"source": "jkushner", "target": "ikaveladze"},
+
+    {"source": "dtrumpjr", "target": "rbusiness"},
+    {"source": "dtrumpjr", "target": "eagalarov"},
+    {"source": "dtrumpjr", "target": "atorshin"},
+    {"source": "dtrumpjr", "target": "nveselnitskaya"},
+    {"source": "dtrumpjr", "target": "rgoldstone"},
+    {"source": "dtrumpjr", "target": "rakhmetshin"},
+    {"source": "dtrumpjr", "target": "asamochornov"},
+    {"source": "dtrumpjr", "target": "ikaveladze"},
+
+    {"source": "rtillerson", "target": "vputin"},
+    {"source": "rtillerson", "target": "rbusiness"},
+    {"source": "rtillerson", "target": "isechin"},
+
+    {"source": "wross", "target": "rbusiness"},
+    {"source": "wross", "target": "vvekselberg"},
+
+    {"source": "rstone", "target": "rhackers"},
+
+    {"source": "jgordon", "target": "skislyak"},
+
+    {"source": "mcaputo", "target": "vputin"},
+    {"source": "mcaputo", "target": "rbusiness"},
+
+    {"source": "rgates", "target": "rbusiness"},
+    {"source": "rgates", "target": "dfirtash"},
+
+    {"source": "mkasowitz", "target": "rbusiness"},
+    {"source": "mkasowitz", "target": "oderipaska"},
+
+    {"source": "mcohen", "target": "aagalarov"},
+    {"source": "mcohen", "target": "dpeskov"},
+
+    {"source": "itrump", "target": "rbusiness"},
+
+    {"source": "fsater", "target": "rbusiness"},
+    {"source": "fsater", "target": "aagalarov"},
+    {"source": "fsater", "target": "dpeskov"},
+
+    {"source": "gpapadopoulos", "target": "smillian"},
+
+    {"source": "eprince", "target": "prep"},
+
+    {"source": "bbenczkowski", "target": "vputin"},
+    {"source": "bbenczkowski", "target": "rbusiness"}
+
+  ]
+}
+</code></pre>
 
 </div>
 
 
 <script>
 
-	var svg = d3.select("#content").append("svg"),
-	    width = 600,
+	var svg = d3.select('#content').append('svg').attr('id', 'svg'),
+	    width = Math.max(document.getElementById('bounding').clientWidth, 0) - 32,
 	    height = 500;
 
 	svg.attr('height', height).attr('width', width);
@@ -44,72 +358,87 @@
 	var color = ['#779ecb', '#FF6961'];
 
 	var simulation = d3.forceSimulation()
-	    .force("link", d3.forceLink().id(function(d) { return d.id; }))
-	    .force("charge", d3.forceManyBody().strength(-300))
-	    .force("center", d3.forceCenter(width / 2, height / 2));
+	    .force('link', d3.forceLink().id(function(d) { return d.id; }))
+	    .force('charge', d3.forceManyBody().strength(-300))
+	    .force('center', d3.forceCenter(width / 2, height / 2));
 
-	d3.json("trumprussia/russia.json", function(error, graph) {
+	d3.json('trumprussia/russia.json', function(error, graph) {
 	  if (error) throw error;
 
 	  // Add connections for own people
 	  graph.nodes.forEach(node =>{
-	  	if(node.id !== "dtrump" && node.id !== "vputin") {
+	  	if(node.id !== 'dtrump' && node.id !== 'vputin') {
 	  		if(node.group == 0) {
 	  			// Add Trump link
-	  			graph.links.push({"source": "dtrump", "target": node.id, "same": true});
+	  			graph.links.push({'source': 'dtrump', 'target': node.id, 'same': true});
 	  		}else {
 	  			// Add Putin link
-	  			graph.links.push({"source": "vputin", "target": node.id, "same": true});
+	  			graph.links.push({'source': 'vputin', 'target': node.id, 'same': true});
 	  		}
 	  	}
 	  });
 
-	  var link = svg.append("g")
-	      .attr("class", "links")
-	    .selectAll("line")
+	  var link = svg.append('g')
+	      .attr('class', 'links')
+	    .selectAll('line')
 	    .data(graph.links)
-	    .enter().append("line")
-	      .attr("stroke-width", function(d) {
+	    .enter().append('line')
+	      .attr('stroke-width', function(d) {
 	      	if(d.same) return 0;
 	      	return 2;
 	      });
 
-	  var node = svg.append("g")
-	      .attr("class", "nodes")
-	    .selectAll("g")
+	  var node = svg.append('g')
+	      .attr('class', 'nodes')
+	    .selectAll('g')
 	    .data(graph.nodes)
-	    .enter().append("g");
+	    .enter().append('g');
 
-	  var circle = node.append("circle")
-	      .attr("r", 23)
-	      .attr("fill", function(d) { return color[d.group]; });
+	  var circle = node.append('circle')
+	      .attr('r', function(d) {
+	  			if(d.main == 1) return 34;
+	  			return 23;
+	  		})
+	      .attr('fill', function(d) { return color[d.group]; });
 	      
 
-	  var picture = node.append("image")
-	  		.attr("xlink:href", function(d) { return 'trumprussia/pics/' + d.id + '.png' })
-	  		.attr("height", 40)
-	  		.attr("width", 40)
-	  		.attr("x", -20)
-	  		.attr("y", -20)
-	  		.attr("stroke", "#FFF")
+	  var picture = node.append('image')
+	  		.attr('xlink:href', function(d) { return 'trumprussia/pics/' + d.id + '.png' })
+	  		.attr('height', function(d) {
+	  			if(d.main == 1) return 60;
+	  			return 40;
+	  		})
+	  		.attr('width', function(d) {
+	  			if(d.main == 1) return 60;
+	  			return 40;
+	  		})
+	  		.attr('x', function(d) {
+	  			if(d.main == 1) return -30;
+	  			return -20;
+	  		})
+	  		.attr('y', function(d) {
+	  			if(d.main == 1) return -30;
+	  			return -20;
+	  		})
+	  		.attr('stroke', '#FFF')
 	  		.call(d3.drag()
-	          .on("start", dragstarted)
-	          .on("drag", dragged)
-	          .on("end", dragended));
+	          .on('start', dragstarted)
+	          .on('drag', dragged)
+	          .on('end', dragended));
 
-	  node.append("title")
+	  node.append('title')
 	      .text(function(d) { return d.id; });
 
 	  simulation
 	      .nodes(graph.nodes)
-	      .on("tick", ticked);
+	      .on('tick', ticked);
 
-	  simulation.force("link")
+	  simulation.force('link')
 	      .links(graph.links);
 
 	  function ticked() {
 	    link
-	        .attr("x1", function(d) { 
+	        .attr('x1', function(d) { 
 	        	if(d.source.main == 1 && d.source.group == 0) {
 	        		return 50;
 	        	} else if(d.source.main == 1 && d.source.group == 1) {
@@ -117,8 +446,8 @@
 	        	}
 	        	return d.source.x; 
 	        })
-	        .attr("y1", function(d) { return d.source.y; })
-	        .attr("x2", function(d) {
+	        .attr('y1', function(d) { return d.source.y; })
+	        .attr('x2', function(d) {
 	        	if(d.target.main == 1 && d.target.group == 0) {
 	        		return 50;
 	        	} else if(d.target.main == 1 && d.target.group == 1) {
@@ -126,10 +455,10 @@
 	        	}
 	        	return d.target.x; 		        	
 	        })
-	        .attr("y2", function(d) { return d.target.y; });
+	        .attr('y2', function(d) { return d.target.y; });
 
 	    node
-	        .attr("transform", function(d) {
+	        .attr('transform', function(d) {
 	        	// X
 	        	var x = 0;
 	        	if(d.main == 1 && d.group == 0) {
@@ -140,7 +469,7 @@
 		        	x = d.x;
 	        	}
 
-							return "translate(" + x + "," + d.y + ")";
+							return 'translate(' + x + ',' + d.y + ')';
 				        	
 	        });
 	  }
@@ -162,5 +491,6 @@
 	  d.fx = null;
 	  d.fy = null;
 	}
+
 
 </script>
