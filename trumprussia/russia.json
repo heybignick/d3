@@ -1,0 +1,139 @@
+{
+  "nodes": [
+    {"id": "dtrump", "group": 0, "main": 1},
+    {"id": "pmanafort", "group": 0},
+    {"id": "mflynn", "group": 0},
+    {"id": "cpage", "group": 0},
+    {"id": "jsessions", "group": 0},
+    {"id": "jkushner", "group": 0},
+    {"id": "dtrumpjr", "group": 0},
+    {"id": "rtillerson", "group": 0},
+    {"id": "wross", "group": 0},
+    {"id": "rstone", "group": 0},
+    {"id": "jgordon", "group": 0},
+    {"id": "mcaputo", "group": 0},
+    {"id": "rgates", "group": 0},
+    {"id": "mkasowitz", "group": 0},
+    {"id": "mcohen", "group": 0},
+    {"id": "itrump", "group": 0},
+    {"id": "fsater", "group": 0},
+    {"id": "gpapadopoulos", "group": 0},
+    {"id": "eprince", "group": 0},
+    {"id": "bbenczkowski", "group": 0},
+
+    {"id": "vputin", "group": 1, "main": 1},
+    {"id": "rbusiness", "group": 1},
+    {"id": "skislyak", "group": 1},
+    {"id": "isechin", "group": 1},
+    {"id": "rhackers", "group": 1},
+    {"id": "sgorkov", "group": 1},
+    {"id": "smillian", "group": 1},
+    {"id": "aartemenko", "group": 1},
+    {"id": "prep", "group": 1},
+    {"id": "dfirtash", "group": 1},
+    {"id": "oderipaska", "group": 1},
+    {"id": "vpodobnyy", "group": 1},
+    {"id": "aagalarov", "group": 1},
+    {"id": "eagalarov", "group": 1},
+    {"id": "vvekselberg", "group": 1},
+    {"id": "ymilner", "group": 1},
+    {"id": "atorshin", "group": 1},
+    {"id": "kkilimnik", "group": 1},
+    {"id": "nveselnitskaya", "group": 1},
+    {"id": "rgoldstone", "group": 1},
+    {"id": "rakhmetshin", "group": 1},
+    {"id": "asamochornov", "group": 1},
+    {"id": "ikaveladze", "group": 1},
+    {"id": "dpeskov", "group": 1}
+  ],
+  "links": [
+    {"source": "dtrump", "target": "vputin"},
+    {"source": "dtrump", "target": "rbusiness"},
+    {"source": "dtrump", "target": "skislyak"},
+    {"source": "dtrump", "target": "smillian"},
+    {"source": "dtrump", "target": "aartemenko"},
+    {"source": "dtrump", "target": "aagalarov"},
+    {"source": "dtrump", "target": "eagalarov"},
+    {"source": "dtrump", "target": "atorshin"},
+    {"source": "dtrump", "target": "rgoldstone"},
+
+    {"source": "pmanafort", "target": "rbusiness"},
+    {"source": "pmanafort", "target": "dfirtash"},
+    {"source": "pmanafort", "target": "oderipaska"},
+    {"source": "pmanafort", "target": "eagalarov"},
+    {"source": "pmanafort", "target": "kkilimnik"},
+    {"source": "pmanafort", "target": "nveselnitskaya"},
+    {"source": "pmanafort", "target": "rgoldstone"},
+    {"source": "pmanafort", "target": "rakhmetshin"},
+    {"source": "pmanafort", "target": "asamochornov"},
+    {"source": "pmanafort", "target": "ikaveladze"},
+
+    {"source": "mflynn", "target": "vputin"},
+    {"source": "mflynn", "target": "rbusiness"},
+    {"source": "mflynn", "target": "skislyak"},
+
+    {"source": "cpage", "target": "rbusiness"},
+    {"source": "cpage", "target": "skislyak"},
+    {"source": "cpage", "target": "isechin"},
+    {"source": "cpage", "target": "vpodobnyy"},
+
+    {"source": "jsessions", "target": "skislyak"},
+
+    {"source": "jkushner", "target": "rbusiness"},
+    {"source": "jkushner", "target": "skislyak"},
+    {"source": "jkushner", "target": "sgorkov"},
+    {"source": "jkushner", "target": "eagalarov"},
+    {"source": "jkushner", "target": "ymilner"},
+    {"source": "jkushner", "target": "nveselnitskaya"},
+    {"source": "jkushner", "target": "rgoldstone"},
+    {"source": "jkushner", "target": "rakhmetshin"},
+    {"source": "jkushner", "target": "asamochornov"},
+    {"source": "jkushner", "target": "ikaveladze"},
+
+    {"source": "dtrumpjr", "target": "rbusiness"},
+    {"source": "dtrumpjr", "target": "eagalarov"},
+    {"source": "dtrumpjr", "target": "atorshin"},
+    {"source": "dtrumpjr", "target": "nveselnitskaya"},
+    {"source": "dtrumpjr", "target": "rgoldstone"},
+    {"source": "dtrumpjr", "target": "rakhmetshin"},
+    {"source": "dtrumpjr", "target": "asamochornov"},
+    {"source": "dtrumpjr", "target": "ikaveladze"},
+
+    {"source": "rtillerson", "target": "vputin"},
+    {"source": "rtillerson", "target": "rbusiness"},
+    {"source": "rtillerson", "target": "isechin"},
+
+    {"source": "wross", "target": "rbusiness"},
+    {"source": "wross", "target": "vvekselberg"},
+
+    {"source": "rstone", "target": "rhackers"},
+
+    {"source": "jgordon", "target": "skislyak"},
+
+    {"source": "mcaputo", "target": "vputin"},
+    {"source": "mcaputo", "target": "rbusiness"},
+
+    {"source": "rgates", "target": "rbusiness"},
+    {"source": "rgates", "target": "dfirtash"},
+
+    {"source": "mkasowitz", "target": "rbusiness"},
+    {"source": "mkasowitz", "target": "oderipaska"},
+
+    {"source": "mcohen", "target": "aagalarov"},
+    {"source": "mcohen", "target": "dpeskov"},
+
+    {"source": "itrump", "target": "rbusiness"},
+
+    {"source": "fsater", "target": "rbusiness"},
+    {"source": "fsater", "target": "aagalarov"},
+    {"source": "fsater", "target": "dpeskov"},
+
+    {"source": "gpapadopoulos", "target": "smillian"},
+
+    {"source": "eprince", "target": "prep"},
+
+    {"source": "bbenczkowski", "target": "vputin"},
+    {"source": "bbenczkowski", "target": "rbusiness"}
+
+  ]
+}

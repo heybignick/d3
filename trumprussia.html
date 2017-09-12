@@ -1,0 +1,166 @@
+<style>
+
+	.links line {
+	  stroke: #AAA;
+	  stroke-opacity: 0.6;
+	}
+
+	.nodes circle {
+	  stroke: #fff;
+	  stroke-width: 1.5px;
+	}
+
+	#content {
+		border: 1px solid #CCC;
+	}
+
+</style>
+
+
+<div id="bounding" class="col-md-12">
+	<h1>Red, White, and Bolshevik</h1>
+	<h3>A new take on the Trump/Russia connection</h3>
+	<p>
+		This is a new take on a fantastic visualization already put together by the Washington Post team.  I'll try to keep it updated, but chances are I won't be able to. 
+	</p>
+	<div id="content"></div>
+	<h3>How I made this</h3>
+	<p>
+		The animation was created using the super-cool <a href="http://www.d3js.org">D3.js</a> visualization package.
+	</p>
+	<h3>The code</h3>
+
+</div>
+
+
+<script>
+
+	var svg = d3.select("#content").append("svg"),
+	    width = 600,
+	    height = 500;
+
+	svg.attr('height', height).attr('width', width);
+
+	var color = ['#779ecb', '#FF6961'];
+
+	var simulation = d3.forceSimulation()
+	    .force("link", d3.forceLink().id(function(d) { return d.id; }))
+	    .force("charge", d3.forceManyBody().strength(-300))
+	    .force("center", d3.forceCenter(width / 2, height / 2));
+
+	d3.json("trumprussia/russia.json", function(error, graph) {
+	  if (error) throw error;
+
+	  // Add connections for own people
+	  graph.nodes.forEach(node =>{
+	  	if(node.id !== "dtrump" && node.id !== "vputin") {
+	  		if(node.group == 0) {
+	  			// Add Trump link
+	  			graph.links.push({"source": "dtrump", "target": node.id, "same": true});
+	  		}else {
+	  			// Add Putin link
+	  			graph.links.push({"source": "vputin", "target": node.id, "same": true});
+	  		}
+	  	}
+	  });
+
+	  var link = svg.append("g")
+	      .attr("class", "links")
+	    .selectAll("line")
+	    .data(graph.links)
+	    .enter().append("line")
+	      .attr("stroke-width", function(d) {
+	      	if(d.same) return 0;
+	      	return 2;
+	      });
+
+	  var node = svg.append("g")
+	      .attr("class", "nodes")
+	    .selectAll("g")
+	    .data(graph.nodes)
+	    .enter().append("g");
+
+	  var circle = node.append("circle")
+	      .attr("r", 23)
+	      .attr("fill", function(d) { return color[d.group]; });
+	      
+
+	  var picture = node.append("image")
+	  		.attr("xlink:href", function(d) { return 'trumprussia/pics/' + d.id + '.png' })
+	  		.attr("height", 40)
+	  		.attr("width", 40)
+	  		.attr("x", -20)
+	  		.attr("y", -20)
+	  		.attr("stroke", "#FFF")
+	  		.call(d3.drag()
+	          .on("start", dragstarted)
+	          .on("drag", dragged)
+	          .on("end", dragended));
+
+	  node.append("title")
+	      .text(function(d) { return d.id; });
+
+	  simulation
+	      .nodes(graph.nodes)
+	      .on("tick", ticked);
+
+	  simulation.force("link")
+	      .links(graph.links);
+
+	  function ticked() {
+	    link
+	        .attr("x1", function(d) { 
+	        	if(d.source.main == 1 && d.source.group == 0) {
+	        		return 50;
+	        	} else if(d.source.main == 1 && d.source.group == 1) {
+	        		return width - 50; 
+	        	}
+	        	return d.source.x; 
+	        })
+	        .attr("y1", function(d) { return d.source.y; })
+	        .attr("x2", function(d) {
+	        	if(d.target.main == 1 && d.target.group == 0) {
+	        		return 50;
+	        	} else if(d.target.main == 1 && d.target.group == 1) {
+	        		return width - 50; 
+	        	}
+	        	return d.target.x; 		        	
+	        })
+	        .attr("y2", function(d) { return d.target.y; });
+
+	    node
+	        .attr("transform", function(d) {
+	        	// X
+	        	var x = 0;
+	        	if(d.main == 1 && d.group == 0) {
+	        		x = 50;
+	        	} else if(d.main == 1 && d.group == 1) {
+	        		x = width - 50; 
+	        	} else {
+		        	x = d.x;
+	        	}
+
+							return "translate(" + x + "," + d.y + ")";
+				        	
+	        });
+	  }
+	});
+
+	function dragstarted(d) {
+	  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+	  d.fx = d.x;
+	  d.fy = d.y;
+	}
+
+	function dragged(d) {
+	  d.fx = d3.event.x;
+	  d.fy = d3.event.y;
+	}
+
+	function dragended(d) {
+	  if (!d3.event.active) simulation.alphaTarget(0);
+	  d.fx = null;
+	  d.fy = null;
+	}
+
+</script>
