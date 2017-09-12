@@ -1,0 +1,252 @@
+<html>
+<head>
+	<title>Trig</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="../prism.js"></script>
+	<link rel="stylesheet" type="text/css" href="../prism.css">
+	<style>
+		body {
+			padding: 0;
+			margin: 0;
+		}
+		#content{
+			border: 1px solid #CCC;
+		}
+		circle {
+			fill: #FFF;
+			stroke: #000;
+			stroke-width: 3;
+		}
+		.drawn{
+			fill: #F00000;
+			stroke-width: 0;
+		}
+		line{
+			stroke: #000;
+			stroke-width: 3;			
+		}
+		#tracer{
+			stroke: #F00000;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="container">
+
+		<div id="bounding" class="col-md-12">
+			<h1>Get Trig-gered!</h1>
+			<h3>Geometric animation</h3>
+			<p>
+				The following animation illustates how the y coordinate of the circumference of a circle translates to a sine wave in a time series.  This follows, of course, as the y coordinate of a circle is calculated as `cy + r * sin(t).` where cy is the y coordinate of the centroid, r is the radius, and t is time.
+			</p>
+			<div id="content"></div>
+			<h3>How I made this</h3>
+			<p>
+				The animation was created using the super-cool <a href="http://www.d3js.org">D3.js</a> visualization package.
+			</p>
+			<h3>The code</h3>
+
+			<h5>CSS</h5>
+<pre><code class="language-css">body {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+#content{
+	border: 1px solid #CCC;
+}
+circle {
+	fill: #FFF;
+	stroke: #000;
+	stroke-width: 3;
+}
+.drawn{
+	fill: #F00000;
+	stroke-width: 0;
+}
+line{
+	stroke: #000;
+	stroke-width: 3;			
+}
+#tracer{
+	stroke: #F00000;
+}
+</code></pre>
+
+
+			<h5>HTML</h5>
+<pre><code class="language-markup">&lt;script src="https://d3js.org/d3.v4.min.js">&lt;/script>
+&lt;div id="content">&lt;/div>
+</code></pre>
+
+
+			<h5>JS</h5>
+<pre><code class="language-javascript">// Get viewport dimensions
+var w = Math.max(document.getElementById('bounding').clientWidth, 0);
+var r = 100;
+var h = r * 2.5;
+var cx = 2 * r;
+var cy = h/2;
+
+// SVG container
+var svg = d3.select('#content')
+	.append('svg')
+	.attr('width', w)
+	.attr('height', h);
+
+// This is the circle from which the sine wave will be based
+var circle = svg.append('circle')
+	.attr('r', r)
+	.attr('cx', cx)
+	.attr('cy', cy);
+
+// Create axes
+var yAxis = svg.append('line')
+	.attr('x1', (w*3/5))
+	.attr('y1', (h/2 - r))
+	.attr('x2', (w*3/5))
+	.attr('y2', (h/2 + r));
+var xAxis = svg.append('line')
+	.attr('x1', (w*3/5))
+	.attr('y1', (h/2))
+	.attr('x2', w - 2 * r)
+	.attr('y2', (h/2));
+
+// Add tracer line
+var tracer = svg.append('line')
+	.attr('id', 'tracer')
+	.attr('x1', (cx + r))
+	.attr('y1', cy)
+	.attr('x2', (w*3/5))
+	.attr('y2', (h/2));
+
+// The cursor will move around the circle
+var cursor = svg.append('circle')
+	.attr('r', 5)
+	.attr('cx', cx + r)
+	.attr('cy', cy);
+
+// Time interval to move the cursor
+var i = 0;
+var t = setInterval(() => {
+	// Move tracer and cursor
+	tracer
+		.attr('x1', (cx + r * Math.cos(i) ))
+		.attr('y1', (cy + r * Math.sin(i) ))
+		.attr('y2', (cy + r * Math.sin(i) ));
+	cursor
+		.attr('cx', (cx + r * Math.cos(i) ))
+		.attr('cy', (cy + r * Math.sin(i) ));
+	i = i + 0.025;
+	// Append a circle at the tracer point
+	svg.append('circle')
+		.attr('class', 'drawn')
+		.attr('r', 1.5)
+		.attr('cx', (w*3/5) ) 
+		.attr('cy', (cy + r * Math.sin(i) ));
+	// Move each drawn circle to the right
+	d3.selectAll('.drawn')
+		.attr('cx', function(d) {
+			var old = d3.select(this).attr('cx');
+			if(!old) var pos = w*3/5;
+				else var pos = parseFloat(old) + 0.5;
+			if(pos > w - 2 * r) d3.select(this).remove();
+			return pos;
+		});
+},25);
+</code></pre>
+
+
+		</div>
+
+	</div>
+
+<script>
+
+// Get viewport dimensions
+var w = Math.max(document.getElementById('bounding').clientWidth, 0);
+var r = 100;
+var h = r * 2.5;
+var cx = 2 * r;
+var cy = h/2;
+
+// SVG container
+var svg = d3.select('#content')
+	.append('svg')
+	.attr('width', w)
+	.attr('height', h);
+
+// This is the circle from which the sine wave will be based
+var circle = svg.append('circle')
+	.attr('r', r)
+	.attr('cx', cx)
+	.attr('cy', cy);
+
+// Create axes
+var yAxis = svg.append('line')
+	.attr('x1', (w*3/5))
+	.attr('y1', (h/2 - r))
+	.attr('x2', (w*3/5))
+	.attr('y2', (h/2 + r));
+var xAxis = svg.append('line')
+	.attr('x1', (w*3/5))
+	.attr('y1', (h/2))
+	.attr('x2', w - 2 * r)
+	.attr('y2', (h/2));
+
+// Add tracer line
+var tracer = svg.append('line')
+	.attr('id', 'tracer')
+	.attr('x1', (cx + r))
+	.attr('y1', cy)
+	.attr('x2', (w*3/5))
+	.attr('y2', (h/2));
+
+// The cursor will move around the circle
+var cursor = svg.append('circle')
+	.attr('r', 5)
+	.attr('cx', cx + r)
+	.attr('cy', cy);
+
+// Time interval to move the cursor
+var i = 0;
+var t = setInterval(() => {
+	// Move tracer and cursor
+	tracer
+		.attr('x1', (cx + r * Math.cos(i) ))
+		.attr('y1', (cy + r * Math.sin(i) ))
+		.attr('y2', (cy + r * Math.sin(i) ));
+	cursor
+		.attr('cx', (cx + r * Math.cos(i) ))
+		.attr('cy', (cy + r * Math.sin(i) ));
+	i = i + 0.025;
+	// Append a circle at the tracer point
+	svg.append('circle')
+		.attr('class', 'drawn')
+		.attr('r', 1.5)
+		.attr('cx', (w*3/5) ) 
+		.attr('cy', (cy + r * Math.sin(i) ));
+	// Move each drawn circle to the right
+	d3.selectAll('.drawn')
+		.attr('cx', function(d) {
+			var old = d3.select(this).attr('cx');
+			if(!old) var pos = w*3/5;
+				else var pos = parseFloat(old) + 0.5;
+			if(pos > w - 2 * r) d3.select(this).remove();
+			return pos;
+		});
+
+
+},25);
+
+</script>
+
+</body>
+</html>
