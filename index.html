@@ -23,7 +23,7 @@
 					}
 
 					$('#project-container').html('');
-					$('#project-container').load($(this).attr('data-url') + '.html?nocache=efres');
+					$('#project-container').load($(this).attr('data-url') + '.html?nocache=' + (new Date()).getTime());
 				});
 
 				// Handle if there's already a hash ref
@@ -107,7 +107,7 @@
 			<ul class="list-group">
 			  <li class="list-group-item"><a class="project" data-url="trig" href="#trig">Trig</a></li>
 			  <li class="list-group-item"><a class="project" data-url="trumprussia" href="#trumprussia">Red, White, and Bolshevik</a></li>
-			  <li class="list-group-item">Morbi leo risus</li>
+			  <li class="list-group-item"><a class="project" data-url="ntsb" href="#ntsb">Aviation Accidents by State</a></li>
 			  <li class="list-group-item">Porta ac consectetur ac</li>
 			  <li class="list-group-item">Vestibulum at eros</li>
 			</ul>

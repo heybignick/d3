@@ -1,0 +1,411 @@
+[
+    {
+    	"id": 1,
+        "name": "Alabama",
+        "abbreviation": "AL",
+        "population": 4863300,
+        "accidents": 1049,
+        "operations": 16871509
+    },
+    {
+    	"id": 2,
+        "name": "Alaska",
+        "abbreviation": "AK",
+        "population": 741894,
+        "accidents": 5174,
+        "operations": 26420288
+    },
+    {
+    	"id": 4,
+        "name": "Arizona",
+        "abbreviation": "AZ",
+        "population": 6931071,
+        "accidents": 2549,
+        "operations": 72460001
+    },
+    {
+    	"id": 5,
+        "name": "Arkansas",
+        "abbreviation": "AR",
+        "population": 2988248,
+        "accidents": 1417,
+        "operations": 9282999
+    },
+    {
+    	"id": 6,
+        "name": "California",
+        "abbreviation": "CA",
+        "population": 39250017,
+        "accidents": 8108,
+        "operations": 234447470
+
+    },
+    {
+    	"id": 8,
+        "name": "Colorado",
+        "abbreviation": "CO",
+        "population": 5540545,
+        "accidents": 2499,
+        "operations": 42177727
+    },
+    {
+    	"id": 9,
+        "name": "Connecticut",
+        "abbreviation": "CT",
+        "population": 3576452,
+        "accidents": 464,
+        "operations": 15544700
+    },
+    {
+    	"id": 10,
+        "name": "Delaware",
+        "abbreviation": "DE",
+        "population": 952065,
+        "accidents": 104,
+        "operations": 3168479
+    },
+    {
+    	"id": 11,
+        "name": "District Of Columbia",
+        "abbreviation": "DC",
+        "population": 681170,
+        "accidents": 39,
+        "operations": 8177691
+    },
+    {
+    	"id": 12,
+        "name": "Florida",
+        "abbreviation": "FL",
+        "population": 20612439,
+        "accidents": 5199,
+        "operations": 159685934
+    },
+    {
+    	"id": 13,
+        "name": "Georgia",
+        "abbreviation": "GA",
+        "population": 10310371,
+        "accidents": 1803,
+        "operations": 45213485
+    },
+    {
+    	"id": 15,
+        "name": "Hawaii",
+        "abbreviation": "HI",
+        "population": 1428557,
+        "accidents": 447,
+        "operations": 24866201
+    },
+    {
+    	"id": 16,
+        "name": "Idaho",
+        "abbreviation": "ID",
+        "population": 1683140,
+        "accidents": 1276,
+        "operations": 10190121
+    },
+    {
+    	"id": 17,
+        "name": "Illinois",
+        "abbreviation": "IL",
+        "population": 12801539,
+        "accidents": 1884,
+        "operations": 68123477
+    },
+    {
+    	"id": 18,
+        "name": "Indiana",
+        "abbreviation": "IN",
+        "population": 6633053,
+        "accidents": 1205,
+        "operations": 19622780
+    },
+    {
+    	"id": 19,
+        "name": "Iowa",
+        "abbreviation": "IA",
+        "population": 3134693,
+        "accidents": 749,
+        "operations": 8424706
+    },
+    {
+    	"id": 20,
+        "name": "Kansas",
+        "abbreviation": "KS",
+        "population": 2907289,
+        "accidents": 1017,
+        "operations": 14673716
+    },
+    {
+    	"id": 21,
+        "name": "Kentucky",
+        "abbreviation": "KY",
+        "population": 4436974,
+        "accidents": 598,
+        "operations": 21260337
+    },
+    {
+    	"id": 22,
+        "name": "Louisiana",
+        "abbreviation": "LA",
+        "population": 4681666,
+        "accidents": 1098,
+        "operations": 24333436
+    },
+    {
+    	"id": 23,
+        "name": "Maine",
+        "abbreviation": "ME",
+        "population": 1331479,
+        "accidents": 467,
+        "operations": 4621433
+    },
+    {
+    	"id": 24,
+        "name": "Maryland",
+        "abbreviation": "MD",
+        "population": 6016447,
+        "accidents": 735,
+        "operations": 16109263
+    },
+    {
+    	"id": 25,
+        "name": "Massachusetts",
+        "abbreviation": "MA",
+        "population": 6811779,
+        "accidents": 899,
+        "operations": 37150554
+    },
+    {
+    	"id": 26,
+        "name": "Michigan",
+        "abbreviation": "MI",
+        "population": 10001045,
+        "accidents": 1893,
+        "operations": 48089196
+    },
+    {
+    	"id": 27,
+        "name": "Minnesota",
+        "abbreviation": "MN",
+        "population": 5519952,
+        "accidents": 1346,
+        "operations": 29360682
+    },
+    {
+    	"id": 28,
+        "name": "Mississippi",
+        "abbreviation": "MS",
+        "population": 2988726,
+        "accidents": 758,
+        "operations": 10764305
+    },
+    {
+    	"id": 29,
+        "name": "Missouri",
+        "abbreviation": "MO",
+        "population": 6093000,
+        "accidents": 1447,
+        "operations": 27166753
+    },
+    {
+    	"id": 30,
+        "name": "Montana",
+        "abbreviation": "MT",
+        "population": 1042520,
+        "accidents": 966,
+        "operations": 8969441
+    },
+    {
+    	"id": 31,
+        "name": "Nebraska",
+        "abbreviation": "NE",
+        "population": 1907116,
+        "accidents": 660,
+        "operations": 6828592
+    },
+    {
+    	"id": 32,
+        "name": "Nevada",
+        "abbreviation": "NV",
+        "population": 2940058,
+        "accidents": 1086,
+        "operations": 24523012
+    },
+    {
+    	"id": 33,
+        "name": "New Hampshire",
+        "abbreviation": "NH",
+        "population": 1334795,
+        "accidents": 341,
+        "operations": 6363755
+    },
+    {
+    	"id": 34,
+        "name": "New Jersey",
+        "abbreviation": "NJ",
+        "population": 8944469,
+        "accidents": 1074,
+        "operations": 32532412
+    },
+    {
+    	"id": 35,
+        "name": "New Mexico",
+        "abbreviation": "NM",
+        "population": 2081015,
+        "accidents": 1253,
+        "operations": 13095658
+    },
+    {
+    	"id": 36,
+        "name": "New York",
+        "abbreviation": "NY",
+        "population": 19745289,
+        "accidents": 1730,
+        "operations": 63096225
+    },
+    {
+    	"id": 37,
+        "name": "North Carolina",
+        "abbreviation": "NC",
+        "population": 10146788,
+        "accidents": 1474,
+        "operations": 33585446
+    },
+    {
+    	"id": 38,
+        "name": "North Dakota",
+        "abbreviation": "ND",
+        "population": 757952,
+        "accidents": 524,
+        "operations": 12215711
+    },
+    {
+    	"id": 39,
+        "name": "Ohio",
+        "abbreviation": "OH",
+        "population": 11646273,
+        "accidents": 1655,
+        "operations": 32658139
+    },
+    {
+    	"id": 40,
+        "name": "Oklahoma",
+        "abbreviation": "OK",
+        "population": 3923561,
+        "accidents": 1135,
+        "operations": 23863732
+    },
+    {
+    	"id": 41,
+        "name": "Oregon",
+        "abbreviation": "OR",
+        "population": 4093465,
+        "accidents": 1599,
+        "operations": 25151754
+    },
+    {
+    	"id": 42,
+        "name": "Pennsylvania",
+        "abbreviation": "PA",
+        "population": 12784227,
+        "accidents": 1620,
+        "operations": 45031771
+    },
+    {
+    	"id": 44,
+        "name": "Rhode Island",
+        "abbreviation": "RI",
+        "population": 1056426,
+        "accidents": 149,
+        "operations": 3178944
+    },
+    {
+    	"id": 45,
+        "name": "South Carolina",
+        "abbreviation": "SC",
+        "population": 4961119,
+        "accidents": 871,
+        "operations": 14785313
+    },
+    {
+    	"id": 46,
+        "name": "South Dakota",
+        "abbreviation": "SD",
+        "population": 865454,
+        "accidents": 407,
+        "operations": 3785864
+    },
+    {
+    	"id": 47,
+        "name": "Tennessee",
+        "abbreviation": "TN",
+        "population": 6651194,
+        "accidents": 982,
+        "operations": 26477845
+    },
+    {
+    	"id": 48,
+        "name": "Texas",
+        "abbreviation": "TX",
+        "population": 27862596,
+        "accidents": 5257,
+        "operations": 127358834
+    },
+    {
+    	"id": 49,
+        "name": "Utah",
+        "abbreviation": "UT",
+        "population": 3051217,
+        "accidents": 1198,
+        "operations": 13731202
+    },
+    {
+    	"id": 50,
+        "name": "Vermont",
+        "abbreviation": "VT",
+        "population": 624594,
+        "accidents": 215,
+        "operations": 2753100
+    },
+    {
+    	"id": 51,
+        "name": "Virginia",
+        "abbreviation": "VA",
+        "population": 8411808,
+        "accidents": 1147,
+        "operations": 30590063
+    },
+    {
+    	"id": 53,
+        "name": "Washington",
+        "abbreviation": "WA",
+        "population": 7288000,
+        "accidents": 2377,
+        "operations": 43384405
+    },
+    {
+    	"id": 54,
+        "name": "West Virginia",
+        "abbreviation": "WV",
+        "population": 1831102,
+        "accidents": 376,
+        "operations": 8688366
+    },
+    {
+    	"id": 55,
+        "name": "Wisconsin",
+        "abbreviation": "WI",
+        "population": 5778708,
+        "accidents": 1418,
+        "operations": 22871387
+    },
+    {
+    	"id": 56,
+        "name": "Wyoming",
+        "abbreviation": "WY",
+        "population": 585501,
+        "accidents": 677,
+        "operations": 3112703
+    }
+]
